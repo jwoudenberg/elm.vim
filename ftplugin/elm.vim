@@ -4,9 +4,9 @@ endif
 
 let b:loaded_elm_vim_plugin = 1
 
-" TODO: expose this command as a <PLUG> mapping too.
 " TODO: document this command.
 command -buffer GoToDefinition call s:goToDefinition()
+nnoremap <silent> <Plug>(elm-goto-definition) :GoToDefinition<CR>
 
 " TODO: move this function to autoload.
 let s:path = expand('<sfile>:p:h')
@@ -27,5 +27,5 @@ function! s:goToDefinition()
       return
     endif
   endfor
-  " TODO: Tell the user when the term they jump to could not be found.
+  echo 'Could not find definition of: ' . l:term
 endfunction
