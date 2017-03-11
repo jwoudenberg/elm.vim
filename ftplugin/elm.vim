@@ -13,7 +13,7 @@ let s:path = expand('<sfile>:p:h')
 function! s:goToDefinition()
   echo s:path
   " TODO: make this an asynchronous function call.
-  let l:result = system(s:path . '/../lib/parse-elm-experiment-exe ' . expand('%'))
+  let l:result = system(s:path . '/../lib/elm-editor-tools-exe ' . expand('%'))
   if v:shell_error
     echo 'Parsing elm file failed: ' . l:result
     return
