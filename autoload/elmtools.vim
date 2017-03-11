@@ -9,13 +9,20 @@ function! elmtools#GoToDefinition() abort
     return
   endif
   let l:term = expand('<cWORD>')
-  let l:definitions = json_decode(l:result)
-  " TODO: Remove this loop by changing the definitions list to a dictionary.
-  for l:definition in l:definitions
-    if l:definition.name == l:term
-      call cursor(l:definition.line, l:definition.column)
-      return
-    endif
-  endfor
+  " TODO: cache this operation.
+  let l:definitions = s:definitionsAsDict(json_decode(l:result))
+  if has_key(l:definitions, l:term)
+    let l:definition = l:definitions[l:term]
+    call cursor(l:definition.line, l:definition.column)
+    return
+  endif
   echo 'Could not find definition of: ' . l:term
+endfunction
+
+function s:definitionsAsDict(definitions)
+  let l:dict = {}
+  for l:definition in a:definitions
+    let l:dict[l:definition.name] = l:definition
+  endfor
+  return l:dict
 endfunction
