@@ -9,6 +9,7 @@ function! elmtools#GoToDefinition() abort
     return
   endif
   let l:definition = json_decode(l:result)
+  exec 'edit ' . fnameescape(l:definition.fileName)
   call cursor(l:definition.line, l:definition.column)
 endfunction
 
