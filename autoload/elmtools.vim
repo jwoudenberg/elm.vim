@@ -3,7 +3,10 @@ let s:path = expand('<sfile>:p:h')
 function! elmtools#GoToDefinition() abort
   echo s:path
   " TODO: make this an asynchronous function call.
-  let l:result = system(s:path . '/../bin/elm-find-definition ' . expand('%') . ' ' . expand('<cWORD>'))
+  let l:cWORD = expand('<cWORD>')
+  " Trim non-variable characters from both sides of the WORD under the cursor.
+  let l:name = substitute(l:cWORD, '\v^\W*((\w|\.)+)\W*$', '\1', '')
+  let l:result = system(s:path . '/../bin/elm-find-definition ' . expand('%') . ' ' . l:name)
   if v:shell_error
     echo 'Parsing elm file failed: ' . l:result
     return
@@ -27,8 +30,8 @@ endfunction
 " Using the built-in :echoerr prints a stacktrace, which isn't that nice.
 " From: https://github.com/moll/vim-node/blob/master/autoload/node.vim
 function! s:error(msg)
-	echohl ErrorMsg
-	echomsg a:msg
-	echohl NONE
-	let v:errmsg = a:msg
+  echohl ErrorMsg
+  echomsg a:msg
+  echohl NONE
+  let v:errmsg = a:msg
 endfunction
